@@ -1,4 +1,4 @@
-/*******************************Calendar Top Navigation*********************************/
+/*******************************Calendar Top Navigation*********************************
 
 div#calendar{
   margin:0px auto;
@@ -13,55 +13,55 @@ div#calendar div.box{
     left:0px;
     width:100%;
     height:40px;
-    background-color:   #787878 ;      
+    background-color:   #787878 ;
 }
- 
+
 div#calendar div.header{
-    line-height:40px;  
+    line-height:40px;
     vertical-align:middle;
     position:absolute;
     left:11px;
     top:0px;
     width:582px;
-    height:40px;   
+    height:40px;
     text-align:center;
 }
- 
-div#calendar div.header a.prev,div#calendar div.header a.next{ 
+
+div#calendar div.header a.prev,div#calendar div.header a.next{
     position:absolute;
-    top:0px;   
+    top:0px;
     height: 17px;
     display:block;
     cursor:pointer;
     text-decoration:none;
     color:#FFF;
 }
- 
+
 div#calendar div.header span.title{
     color:#FFF;
     font-size:18px;
 }
- 
- 
+
+
 div#calendar div.header a.prev{
     left:0px;
 }
- 
+
 div#calendar div.header a.next{
     right:0px;
 }
- 
- 
- 
- 
-/*******************************Calendar Content Cells*********************************/
+
+
+
+
+/*******************************Calendar Content Cells*********************************
 div#calendar div.box-content{
     border:1px solid #787878 ;
     border-top:none;
 }
- 
- 
- 
+
+
+
 div#calendar ul.label{
     float:left;
     margin: 0px;
@@ -69,11 +69,11 @@ div#calendar ul.label{
     margin-top:5px;
     margin-left: 5px;
 }
- 
+
 div#calendar ul.label li{
     margin:0px;
     padding:0px;
-    margin-right:5px;  
+    margin-right:5px;
     float:left;
     list-style-type:none;
     width:80px;
@@ -85,8 +85,8 @@ div#calendar ul.label li{
     font-size: 15px;
     background-color: transparent;
 }
- 
- 
+
+
 div#calendar ul.dates{
     float:left;
     margin: 0px;
@@ -94,8 +94,8 @@ div#calendar ul.dates{
     margin-left: 5px;
     margin-bottom: 5px;
 }
- 
-/** overall width = width+padding-right**/
+
+/** overall width = width+padding-right**
 div#calendar ul.dates li{
     margin:0px;
     padding:0px;
@@ -110,7 +110,7 @@ div#calendar ul.dates li{
     font-size:25px;
     background-color: #DDD;
     color:#000;
-    text-align:center; 
+    text-align:center;
 }
 
 div#calendar ul.dates li.end{
@@ -127,7 +127,7 @@ div#calendar ul.dates li.end{
     font-size:25px;
     background-color: #FA8072;
     color:#000;
-    text-align:center; 
+    text-align:center;
 }
 
 div#calendar ul.dates li.holiday{
@@ -144,13 +144,131 @@ div#calendar ul.dates li.holiday{
     font-size:25px;
     background-color: #FA8072;
     color:#000;
-    text-align:center; 
+    text-align:center;
 }
- 
+
 :focus{
     outline:none;
 }
- 
+
 div.clear{
     clear:both;
-}     
+}
+*/
+.circle {
+    border: 0.15em solid grey;
+    border-radius: 100%;
+    height: 2em;
+    width: 2em;
+    text-align: center;
+}
+
+.circle div {
+    margin-top: 0.10em;
+    font-size: 1.5em;
+    font-weight: bold;
+    font-family: sans-serif;
+    color: grey;
+}
+
+
+
+#footer {
+    border-top: 1px solid #333;
+    position: relative;
+    border-radius: 6px;
+    height:75px;
+    padding:3 !important;
+    margin-top:20px !important;
+    background: #eee;
+    margin-top: 23px;
+    text-align:center;
+    margin-bottom: 10 !important;
+}
+
+.jumbotronmod {
+    border-radius: 6px;
+    padding:3 !important;
+    margin-top:20px !important;
+    margin-bottom: 10 !important;
+    background: #66CCCC;
+
+    font-family: "prenton-ultra-condensed",sans-serif;
+    color: white;
+    vertical-align: middle;
+    clear: left;
+    float: right;
+    text-align: center;
+    width: 100%;
+    text-shadow: 0 0.5px 0.5px #000000;
+    font-family: "prenton-ultra-condensed",sans-serif;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 500;
+}
+
+/*
+.numberCircle {
+    border-radius: 50%;
+    behavior: url(PIE.htc); // remove if you don't care about IE8
+
+    width: 35px;
+    height: 35px;
+    padding: 2px;
+
+    border: 1px solid #666;
+    color: #666;
+    text-align: center;
+
+    font: px Arial, sans-serif;
+}
+
+.show_IMAGE {
+
+    background-image : url('holiday.png');
+    background-color : #ffffff;
+    background-repeat : no-repeat;
+}
+*/
+.ImageEmbed {
+  display: block;
+  overflow: hidden;
+  position: relative;
+}
+
+.ImageEmbed:before {
+  content: "";
+  display: block;
+  width: 100%;
+}
+
+.ImageEmbed--3by1:before {
+  padding-bottom: 33.33333%;
+}
+
+.ImageEmbed--2by1:before {
+  padding-bottom: 50%;
+}
+
+.ImageEmbed--16by9:before {
+  padding-bottom: 56.25%;
+}
+
+.ImageEmbed--4by3:before {
+  padding-bottom: 75%;
+}
+
+.holidayImage {
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 0 auto 1em;
+  max-height: 600px;
+  max-width: 600px;
+  background-image : url('images/holiday.png');
+}
+
+.IconHandle {
+    width:45px;
+    height:45px;
+}

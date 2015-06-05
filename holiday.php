@@ -2,7 +2,7 @@
 
 
 // Two options for connecting to the database:
-class Holiday {  
+class Holiday {
 	private $_connection;
 	private static $_instance; //The single instance
 	private $_host = "serverip";
@@ -29,7 +29,7 @@ class Holiday {
 
 	public function fetchHoliday ($month, $year) {
 		$days = "";
-		
+
 		// Select holidays
 		$sql = sprintf("SELECT * FROM holiday where year=%d AND month='%s' AND holiday=1",
             $year,  $month);
@@ -42,19 +42,24 @@ class Holiday {
         		$days = $days.$row["date"]." ".$row["holidayname"]."|";
     		}
 		} else {
-			$days = 'no holiday *** sql query ='.$sql;
+			//$days = 'no holiday *** sql query ='.$sql;
 			//$days = "";
 		}
 
 		return $days;
 	}
 
-    /********************* PRIVATE **********************/ 
+	// Get mysqli connection
+	public function closeConnection() {
+		mysqli_close($this->_connection);
+	}
+
+    /********************* PRIVATE **********************/
     // Constructor
 	private function __construct() {
-		$this->_connection = new mysqli($this->_host, $this->_username, 
+		$this->_connection = new mysqli($this->_host, $this->_username,
 			$this->_password, $this->_database);
-	
+
 		// Error handling
 		if(mysqli_connect_error()) {
 			trigger_error("Failed to conencto to MySQL: " . mysql_connect_error(),
