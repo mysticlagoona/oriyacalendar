@@ -154,7 +154,7 @@ div#calendar ul.dates li.holiday{
 div.clear{
     clear:both;
 }
-*/
+
 .circle {
     border: 0.15em solid grey;
     border-radius: 100%;
@@ -172,6 +172,22 @@ div.clear{
 }
 
 
+.oriyaTable, .oriyaTable td{
+    border-color: #C0C0C0 !important;
+}
+*/
+
+table#calenderdates td.today {
+    border: 2px solid #636363 !important;
+}
+
+table#calenderdates td.other {
+    border: 1px solid #C0C0C0 !important;
+}
+
+.oriyaTable, .oriyaTable th{
+    border-color: #C0C0C0 !important;
+}
 
 #footer {
     border-top: 1px solid #333;
@@ -188,9 +204,9 @@ div.clear{
 
 .jumbotronmod {
     border-radius: 6px;
-    padding:3 !important;
-    margin-top:20px !important;
-    margin-bottom: 10 !important;
+    padding:1 !important;
+    /* margin-top:20px !important; */
+    margin-bottom: 1 !important;
     background: #66CCCC;
 
     font-family: "prenton-ultra-condensed",sans-serif;
@@ -271,4 +287,16 @@ div.clear{
 .IconHandle {
     width:45px;
     height:45px;
+}
+
+.tableWithBackground { position: relative; }
+.tableBackground {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
 }

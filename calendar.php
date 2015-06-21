@@ -38,6 +38,7 @@ class Calendar {
     private $naviHref= null;
 
     private $holidayInfo = array();
+    private $EAPInfo = array(); // Ekadashi, Purnima, Amabasya
 
     private $oriyaDate=null;
 
@@ -80,6 +81,7 @@ class Calendar {
 
         // clear the array each time
         unset($this->holidayInfo);
+        unset($this->EAPInfo);
         $test = $this->_populateHoliday ($monthTextualFormat, $this->currentYear);
         $content='<!-- Start -->'; // Todisplay database went fine
 
@@ -87,18 +89,22 @@ class Calendar {
         $content.=' <div class="col-md-1"></div>'; // Left side region
         $content.=' <div class="col-md-8">'; // Actual calender
         $content.='  <br/>';
-        $content.='  <div id="calendar" class="well">'.
-                        '<div id="navigation" class="row">'.
-                        $this->_createNavi().
-                        '</div>'.
+        $content.='  <div id="calendar" class="well">';
+        $content.='<div id="navigation" class="row">';
+        $content.= $this->_createNavi();
+        $content.='</div>';
+        $content.='<table id="calenderdates" class="table table-bordered oriyaTable" style="height:70%;"><thead><tr>'.$this->_createLabels().'</tr></thead>';
 
-                        //'<div class="box">'.
-                            '<table class="table table-bordered" style="height:50%"><thead><tr>'.$this->_createLabels().'</tr></thead>';
-
-        // Can be used later for creating a gap between day name and date table
-        //$content.='         </table>';
-        //$content.='         <div style="clear:both"></div>';
-        //$content.='         <table class="table table-bordered"><tbody>';
+        // Keep same width for each cell
+        $content.=  '<colgroup>'.
+                    '   <col style="width:14.25%">'.
+                    '   <col style="width:14.25%">'.
+                    '   <col style="width:14.25%">'.
+                    '   <col style="width:14.25%">'.
+                    '   <col style="width:14.25%">'.
+                    '   <col style="width:14.25%">'.
+                    '   <col style="width:14.5%">'.
+                    '</colgroup>';
 
         $content.='         <tbody>';
         $weeksInMonth = $this->_weeksInMonth($month,$year);
@@ -147,20 +153,34 @@ class Calendar {
 
         $holidays = $db->fetchHoliday ($month, $year);
         $holiday = explode("|", $holidays);
+
+        $EAPs = $db->fetchEkadashiPurnimaAmabasya ($month, $year);
+        $EAP = explode("|", $EAPs);
+
         $db->closeConnection();
 
         //FIXME::Debugging purpose, Donot remove. Useful for future debugging
         //$text .='<div>'.$holidays.'</div>';
 
         $this->holidayInfo = array();
-
         foreach ($holiday as $value) {
             if (!empty($value)) {
-                $holiday_split = explode(" ", $value);
+                $holiday_split = explode(" ", $value, 2);
                 $this->holidayInfo[$holiday_split[0]] = $holiday_split[1];
 
                 // FIXME::Debugging purpose, Donot remove. Useful for future debugging
                 //$text .='<div>'.$this->holidayInfo[$holiday_split[0]].'</div>';
+            }
+        }
+
+        $this->EAPInfo = array();
+        foreach ($EAP as $value) {
+            if (!empty($value)) {
+                $EAP_split = explode(" ", $value, 2);
+                $this->EAPInfo[$EAP_split[0]] = $EAP_split[1];
+
+                // FIXME::Debugging purpose, Donot remove. Useful for future debugging
+                //$text .='<div>'.$this->EAPInfo[$EAP_split[0]].'</div>';
             }
         }
 
@@ -190,12 +210,12 @@ class Calendar {
         // Previous month button
         $retVal ='<div class="col-sm-2" style="display:block;cursor:pointer;text-decoration:none;color:#FFF;">'.
                 //'<a class="btn btn-info input-block-level pull-left" href="'.$this->naviHref.'?month='.sprintf('%02d',$preMonth).'&year='.$preYear.'"><span class="glyphicon glyphicon-chevron-left"></span>  &#2858;&#2882&#2864;&#2893;&#2860;  </a>'.
-                    '<a class="btn btn-info btn-block" href="'.$this->naviHref.'?month='.sprintf('%02d',$preMonth).'&year='.$preYear.'"><span class="glyphicon glyphicon-chevron-left"></span>  '.$preMonthOriya.'  </a>'.
+                    '<a class="btn btn-info btn-block" href="'.$this->naviHref.'?month='.sprintf('%02d',$preMonth).'&year='.$preYear.'" style="font-weight: 600"><span class="glyphicon glyphicon-chevron-left"></span>  '.$preMonthOriya.'  </a>'.
                 '</div>';
 
         // Middle label
         $retVal .='<div class="col-sm-8 text-center">'.
-                      '<a href="#" class="btn btn-success btn-block active" background-color="#cccccc">'.$thisYearOriya.' '.$thisMonthOriya.'</a>'.
+                      '<a href="#" class="btn btn-success btn-block active" background-color="#cccccc">'.$thisMonthOriya.' '.$thisYearOriya.'</a>'.
                   '</div>';
 
         // Next Month button
@@ -221,25 +241,24 @@ class Calendar {
 
         $retVal.='      <div class="panel-body">';
 
-        // Replace with image
-        //$retVal.='      <div class="holidayImage ImageEmbed ImageEmbed--3by1"></div>';
-
-        /* Get all the holidays date and name and populate the list */
-
+        /* Get all the holidays date and name and populate the list
         $retVal.='<ul class="list-group">';
-        $retVal.='<li class="list-group-item row">';
-        $retVal.='</li>';
-
         foreach( $this->holidayInfo as $key => $val ) {
-            $retVal.='<li class="list-group-item row">';
-            $retVal.='  <div class="col-md-3">'.$this->oriyaDate->getTarikh($key).'</div>';
-            $retVal.='  <div class="col-md-9">'.$val.'</div>';
+            if (!empty ($val)) {
+                $retVal.='<li class="list-group-item row">';
+                $retVal.='  <div class="col-md-3">'.$this->oriyaDate->getTarikh($key).'</div>';
+                $retVal.='  <div class="col-md-9">'.$val.'</div>';
 
-            // Need to add semicolon to protect the holiday list data
-            $retVal.='</li>';
+                // Need to add semicolon to protect the holiday list data
+                $retVal.='</li>'
+            }
         }
-
         $retVal.='  </ul>';
+
+        */
+
+        $retVal.='<img src="./images/holiday.gif" width="100%" height="75%">';
+
 
 
         $retVal.='</div>'; // End of panelbody
@@ -249,16 +268,55 @@ class Calendar {
     }
 
     /**
+     * create pre table inside cell
+    */
+    private function _pretable_inside_cell () {
+
+            $pre_table ='<table border=0  style="height:100%; width: 100%;">';
+            $pre_table.=   '<colgroup>'.
+                        '   <col style="height:50%;width:50%">'.
+                        '   <col style="height:50%;width:50%%">'.
+                        '</colgroup>';
+
+            $pre_table.=' <tbody>';
+            $pre_table.='  <tr> <td valign="top">';
+
+            return $pre_table;
+    }
+
+    /**
+     * create pre table inside cell
+    */
+    private function _posttable_inside_cell ($cellContent, $imagesrc, $imagename) {
+            $post_table ='  </td>';
+            $post_table.='  <td align=right valign="top">';
+            if (!empty ($imagesrc)) {
+                $post_table.='      <img src="'.$imagesrc.'" alt="'.$imagename.'">';
+            }
+            $post_table.='  </td>';
+            $post_table.='  </tr>';
+            $post_table.='  <tr>';
+            $post_table.='  <td align=left valign="bottom">';
+            $post_table.='  </td>';
+            $post_table.='  <td align=right valign="bottom"><sup>'.$cellContent.'</sup>';
+            $post_table.='  </td>';
+            $post_table.='</tr>';
+            $post_table.='</tbody></table>'; // End of cell table
+
+            return $post_table;
+    }
+
+    /**
     * create the li element for ul
     */
     private function _showDay($cellNumber){
-        // To create a style for todays date
-        $todayStyleStart = " ";
-        $todayStyleEnd = " ";
-
         $return == null;
+
+        // To create a style for todays date
+        $cellStyle = " ";
+        $moonSign = " ";
+
         $isHoliday=0;
-        $isToday=0;
 
         /* Satureday or Sunday is a holiday by default */
         $isHoliday = ($cellNumber%7==0? 1:0);
@@ -275,7 +333,10 @@ class Calendar {
             }
         }
 
-        if( ($this->currentDay!=0)&&($this->currentDay<=$this->daysInMonth) ){
+        $cellStyle = 'class="other"';
+        $eap_imagesrc = "";
+        $eap_imagename = "";
+        if (($this->currentDay!=0)&&($this->currentDay<=$this->daysInMonth) ){
 
             $this->currentDate = date('Y-m-d',strtotime($this->currentYear.'-'.$this->currentMonth.'-'.($this->currentDay)));
 
@@ -286,16 +347,21 @@ class Calendar {
                 $isHoliday = 1;
             }
 
+            /* Check if it is a EAP */
+            if (array_key_exists ($cellContent, $this->EAPInfo)) {
+                $eap_imagesrc = "./images/".$this->EAPInfo[$cellContent].".png";
+                //$eap_imagename = 1;
+            }
+
             /* Check if it is today */
             $today = date("Y-m-d",time());
             if ($today == $this->currentDate) {
-                $todayStyleStart = '<div class="circle">';
-                $todayStyleEnd= '</div>';
+                $cellStyle = 'class="today"';
             }
 
             $this->currentDay++;
 
-        }else{
+        } else {
 
             $this->currentDate =null;
             $cellContent=null;
@@ -306,20 +372,34 @@ class Calendar {
         */
         if ($isHoliday) {
 
-            $return = '<td id="td-'.$this->currentDate.'" bgcolor="#FFA6A6">'.$todayStyleStart;
+            $return = '<td id="td-'.$this->currentDate.'" bgcolor="#FFA6A6" '.$cellStyle.'>';
+            $return.= $this->_pretable_inside_cell();
+
             $return.= $this->oriyaDate->getTarikh ($cellContent);
-            $return.= $todayStyleEnd.'</td>';
+
+            $return.= $this->_posttable_inside_cell($cellContent, $eap_imagesrc, "");
+            $return.='</td>';
 
         } else if ($isSatureday) {
 
-            $return = '<td id="td-'.$this->currentDate.'" class="danger ">'.$todayStyleStart;
+            $return = '<td id="td-'.$this->currentDate.'" bgcolor="#FFDEDE" '.$cellStyle.'>';
+
+            // Create a table inside
+            $return.= $this->_pretable_inside_cell();
+
             $return.= $this->oriyaDate->getTarikh ($cellContent);
-            $return.= $todayStyleEnd.'</td>';
+
+            $return.= $this->_posttable_inside_cell($cellContent, $eap_imagesrc, "");
+            $return.= '</td>';
 
         } else {
-            $return = '<td id="td-'.$this->currentDate.'" >'.$todayStyleStart;
+            $return = '<td id="td-'.$this->currentDate.'" '.$cellStyle.'>';
+            $return.= $this->_pretable_inside_cell();
+
             $return.= $this->oriyaDate->getTarikh ($cellContent);
-            $return.= $todayStyleEnd.'</td>';
+
+            $return.= $this->_posttable_inside_cell($cellContent, $eap_imagesrc, "");
+            $return.= '</td>';
         }
 
         return $return;

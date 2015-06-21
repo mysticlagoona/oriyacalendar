@@ -32,15 +32,15 @@ class Holiday {
 
 		// Select holidays
 		$sql = sprintf("SELECT * FROM holiday where year=%d AND month='%s' AND holiday=1",
-            $year,  $month);
+			$year,  $month);
 
 		$result = $this->_connection->query($sql);
 
 		if ($result->num_rows > 0) {
-    		// output data of each row
-    		while($row = $result->fetch_assoc()) {
-        		$days = $days.$row["date"]." ".$row["holidayname"]."|";
-    		}
+			// output data of each row
+			while($row = $result->fetch_assoc()) {
+				$days .= $row["date"]." ".$row["holidayname"]."|";
+			}
 		} else {
 			//$days = 'no holiday *** sql query ='.$sql;
 			//$days = "";
@@ -49,13 +49,45 @@ class Holiday {
 		return $days;
 	}
 
+	public function fetchEkadashiPurnimaAmabasya ($month, $year) {
+		$days = "";
+		$type = "";
+
+		// Select Ekadashi
+		$sql = sprintf("SELECT date, ekadashi, purnima, amabasya FROM holiday where year=%d AND month='%s' AND (ekadashi=1 OR purnima=1 OR amabasya=1)",
+			$year,  $month);
+
+		$result = $this->_connection->query($sql);
+
+		if ($result->num_rows > 0) {
+			// output data of each row
+			while($row = $result->fetch_assoc()) {
+				if ($row["ekadashi"]) {
+					$type = "e";
+				} else if ($row["purnima"]) {
+					$type = "p";
+				} else {
+					$type = "a";
+				}
+
+				$days .= $row["date"]." ".$type."|";
+			}
+		} else {
+			//$days = 'no holiday *** sql query ='.$sql;
+			//$days = "";
+		}
+
+		return $days;
+	}
+
+
 	// Get mysqli connection
 	public function closeConnection() {
 		mysqli_close($this->_connection);
 	}
 
-    /********************* PRIVATE **********************/
-    // Constructor
+	/********************* PRIVATE **********************/
+	// Constructor
 	private function __construct() {
 		$this->_connection = new mysqli($this->_host, $this->_username,
 			$this->_password, $this->_database);

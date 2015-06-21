@@ -7,6 +7,7 @@
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 <link href="calendar.css" type="text/css" rel="stylesheet" />
+<link href="social.css" type="text/css" rel="stylesheet" />
 
 
 
@@ -53,21 +54,23 @@ Function disableclick(event)
 <!-- Footer -->
 <nav class="navbar navbar-inverse navbar-fixed-bottom">
   <div class="container-fluid">
+
+    <a class="navbar-brand navbar-right" href="#"><span class="glyphicon glyphicon-copyright-mark"></span>  Oriya Calendar Team</a>
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-copyright-mark"></span>  Oriya Calendar Team</a>
     </div>
+
+
     <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><img class="IconHandle" src="images/facebook.png" alt="Facebook" ></a></li>
-        <li><a href="#"><img class="IconHandle" src="images/twitter.png" alt="Twitter" ></a></li>
-        <li><a href="#"><img class="IconHandle" src="images/googleplus.png" alt="Google Plus" ></a></li>
-      </ul>
+        <div class="social-popout"><a href="#"><img src="images/facebook.png" alt="Facebook" ></a></div>
+        <div class="social-popout"><a href="#"><img src="images/twitter.png" alt="Twitter" ></a></div> 
+        <div class="social-popout"><a href="#"><img src="images/googleplus.png" alt="Google Plus" ></a></div>
     </div>
+
   </div>
 </nav>
     </div>
