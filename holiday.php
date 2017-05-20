@@ -5,10 +5,10 @@
 class Holiday {  
 	private $_connection;
 	private static $_instance; //The single instance
-	private $_host = "localhost";
-	private $_username = "calendaruser";
-	private $_password = "calendar-passwd";
-	private $_database = "calendardb";
+	private $_host = "serverip";
+	private $_username = "usr";
+	private $_password = "pwd";
+	private $_database = "db";
 
 	/*
 	Get an instance of the Database
